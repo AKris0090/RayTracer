@@ -17,10 +17,10 @@ public class PPMFileMaker {
     private final VectorMath vm = new VectorMath();
 
     public PPMFileMaker(int width, int height) {
-//        red = new float[height][width];
-//        green = new float[height][width];
-//        blue = new float[height][width];
-//        alpha = new float[height][width];
+        red = new float[height][width];
+        green = new float[height][width];
+        blue = new float[height][width];
+        alpha = new float[height][width];
         this.width = width;
         this.height = height;
     }

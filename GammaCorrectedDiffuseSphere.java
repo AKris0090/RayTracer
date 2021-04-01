@@ -6,7 +6,7 @@ import Vector.VectorMath;
 
 import java.io.IOException;
 
-public class DiffuseImage {
+public class GammaCorrectedDiffuseSphere {
 
     private final int height;
     private final int width;
@@ -17,7 +17,7 @@ public class DiffuseImage {
     private final int samplesPerPixel;
     private final int maxNumBounces;
 
-    public DiffuseImage(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces) {
+    public GammaCorrectedDiffuseSphere(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces) {
         this.height = height;
         this.width = width;
         this.ppm = ppm;
@@ -60,7 +60,7 @@ public class DiffuseImage {
         return vm.add((vm.multiply(white, (float) (1.0 - t))), (vm.multiply(desired, (float) t)));
     }
 
-    public void initDiffuseImage() throws IOException {
+    public void initGammaCorrectedDiffuseImage() throws IOException {
         float[][] redChannel = new float[height + 1][width];
         float[][] greenChannel = new float[height + 1][width];
         float[][] blueChannel = new float[height + 1][width];
@@ -76,9 +76,9 @@ public class DiffuseImage {
                     Ray r = camera.getRay(x, y);
                     color = vm.add(color, gradColor(r, maxNumBounces));
                 }
-                redChannel[i][j] = (float) (color.getX() / (double) samplesPerPixel);
-                greenChannel[i][j] = (float) (color.getY() / (double) samplesPerPixel);
-                blueChannel[i][j] = (float) (color.getZ() / (double) samplesPerPixel);
+                redChannel[i][j] = (float) (Math.sqrt((color.getX() / (double) samplesPerPixel)));
+                greenChannel[i][j] = (float) (Math.sqrt((color.getY() / (double) samplesPerPixel)));
+                blueChannel[i][j] = (float) (Math.sqrt((color.getZ() / (double) samplesPerPixel)));
             }
             updateProgressBar(count, height);
             count++;
@@ -88,8 +88,8 @@ public class DiffuseImage {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("diffuseSphere.ppm", samplesPerPixel);
-        System.out.println("\n Diffused Sphere Image Printed \n");
+        ppm.createImage("gammaCorrectedDiffuseSphere.ppm", samplesPerPixel);
+        System.out.println("\n Gamma Corrected Diffuse Sphere Image Printed \n");
     }
 
     public void updateProgressBar(int count, int height) {
