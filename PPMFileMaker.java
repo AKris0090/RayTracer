@@ -1,4 +1,7 @@
+package ImageCreators;
+
 import Vector.Vector3D;
+import Vector.VectorMath;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,8 +14,9 @@ public class PPMFileMaker {
     private float[][] alpha;
     private final int width;
     private final int height;
+    private final VectorMath vm = new VectorMath();
 
-    public PPMFileMaker(int width, int height){
+    public PPMFileMaker(int width, int height) {
         red = new float[height][width];
         green = new float[height][width];
         blue = new float[height][width];
@@ -53,12 +57,23 @@ public class PPMFileMaker {
         this.alpha = alpha;
     }
 
-    public void createImage(String fileName) throws IOException {
+    public void createImage(String fileName, int samplesPerPixel) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("P3\n").append(width).append("\n").append(height).append("\n255\n");
         for (int i = height - 1; i >= 0; i--) {
             for (int j = 0; j < width; j++) {
-                Vector3D v = new Vector3D(red[i][j], green[i][j], blue[i][j]);
+                float r = red[i][j];
+                float g = green[i][j];
+                float b = blue[i][j];
+
+                if (samplesPerPixel != 1) {
+                    r = (int) (256 * vm.clamp(r, 0.0, 0.999));
+                    g = (int) (256 * vm.clamp(g, 0.0, 0.999));
+                    b = (int) (256 * vm.clamp(b, 0.0, 0.999));
+                }
+
+                Vector3D v = new Vector3D(r, g, b);
+
                 sb.append(v.writeColor());
             }
         }

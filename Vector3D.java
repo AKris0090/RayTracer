@@ -52,7 +52,7 @@ public class Vector3D {
         this.w = w;
     }
 
-    public String writeColor(){
+    public String writeColor() {
         return this.x + " " + this.y + " " + this.z + "\n";
     }
 }

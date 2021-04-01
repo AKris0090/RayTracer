@@ -51,4 +51,17 @@ public class VectorMath {
         nz = (x1 * y2) - (y1 * x2);
         return new Vector3D(nx, ny, nz);
     }
+    
+    public double randomDouble(double min, double max){
+        return min + ((max - min) * Math.random());
+    }
+
+    public double clamp(double x, double min, double max) {
+        if (x < min) {
+            return min;
+        } else if (x > max) {
+            return max;
+        }
+        return x;
+    }
 }
