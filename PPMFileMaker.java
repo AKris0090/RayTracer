@@ -17,10 +17,10 @@ public class PPMFileMaker {
     private final VectorMath vm = new VectorMath();
 
     public PPMFileMaker(int width, int height) {
-        red = new float[height][width];
-        green = new float[height][width];
-        blue = new float[height][width];
-        alpha = new float[height][width];
+//        red = new float[height][width];
+//        green = new float[height][width];
+//        blue = new float[height][width];
+//        alpha = new float[height][width];
         this.width = width;
         this.height = height;
     }
@@ -30,7 +30,7 @@ public class PPMFileMaker {
     }
 
     public void setRedChannel(float[][] red) {
-        this.red = red;
+        this.red = red.clone();
     }
 
     public float[][] getGreenChannel() {
@@ -38,7 +38,7 @@ public class PPMFileMaker {
     }
 
     public void setGreenChannel(float[][] green) {
-        this.green = green;
+        this.green = green.clone();
     }
 
     public float[][] getBlueChannel() {
@@ -46,7 +46,7 @@ public class PPMFileMaker {
     }
 
     public void setBlueChannel(float[][] blue) {
-        this.blue = blue;
+        this.blue = blue.clone();
     }
 
     public float[][] getAlphaChannel() {
@@ -54,7 +54,7 @@ public class PPMFileMaker {
     }
 
     public void setAlphaChannel(float[][] alpha) {
-        this.alpha = alpha;
+        this.alpha = alpha.clone();
     }
 
     public void createImage(String fileName, int samplesPerPixel) throws IOException {

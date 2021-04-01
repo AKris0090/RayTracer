@@ -5,6 +5,8 @@ import Vector.Vector3D;
 import Vector.VectorMath;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class DiffuseImage {
 
@@ -15,7 +17,7 @@ public class DiffuseImage {
     private final Hittable h;
     private final Camera camera;
     private final int samplesPerPixel;
-    private int numBounces;
+    private int maxNumBounces;
 
     public DiffuseImage(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces) {
         this.height = height;
@@ -24,7 +26,7 @@ public class DiffuseImage {
         this.camera = camera;
         this.h = h;
         this.samplesPerPixel = samplesPerPixel;
-        this.numBounces = numBounces;
+        this.maxNumBounces = numBounces;
     }
 
     public Vector3D randomVectorInUnitCircle(double min, double max){
@@ -36,7 +38,9 @@ public class DiffuseImage {
         }
     }
 
-    public Vector3D gradColor(Ray r) {
+    public Vector3D gradColor(Ray r, int numBounces) {
+        Hittable h1 = new Hittable();
+        h1.worldObjects = h.worldObjects;
         Vector3D dir = r.getDirection();
         Vector3D direction = vm.normalize(dir);
 
@@ -49,11 +53,10 @@ public class DiffuseImage {
             return new Vector3D(0, 0, 0);
         }
 
-        if (h.hitAnything(r, 0.0, Double.MAX_VALUE, h.hRec)) {
-            Vector3D target = vm.add(vm.add(h.hRec.point, h.hRec.normal), randomVectorInUnitCircle(-1, 1));
-            numBounces -= 1;
-            Vector3D returnVec = vm.multiply(gradColor((new Ray(h.hRec.point, vm.sub(target, h.hRec.point)))), 0.5f);
-            return returnVec;
+        if (h1.hitAnything(r, 0.0, Double.MAX_VALUE, h1.hRec)) {
+            Vector3D rand = randomVectorInUnitCircle(-1,1);
+            Vector3D target = vm.add(vm.add(h1.hRec.point, h1.hRec.normal), rand);
+            return vm.multiply(gradColor((new Ray(h1.hRec.point, vm.sub(target, h1.hRec.point))), numBounces - 1), 0.5f);
         }
 
         return vm.add((vm.multiply(white, (float) (1.0 - t))), (vm.multiply(desired, (float) t)));
@@ -73,11 +76,11 @@ public class DiffuseImage {
                     float y = (float) ((i + Math.random()) / (float) (height));
 
                     Ray r = camera.getRay(x, y);
-                    color = vm.add(color, gradColor(r));
+                    color = vm.add(color, gradColor(r, maxNumBounces));
                 }
-                redChannel[i][j] = color.getX() / samplesPerPixel;
-                greenChannel[i][j] = color.getY() / samplesPerPixel;
-                blueChannel[i][j] = color.getZ() / samplesPerPixel;
+                redChannel[i][j] = (float) (color.getX() / (double) samplesPerPixel);
+                greenChannel[i][j] = (float) (color.getY() / (double) samplesPerPixel);
+                blueChannel[i][j] = (float) (color.getZ() / (double) samplesPerPixel);
             }
             updateProgressBar(count, height);
             count++;
