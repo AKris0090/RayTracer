@@ -1,3 +1,5 @@
+package ImageCreators;
+
 import Vector.Vector3D;
 import Vector.VectorMath;
 
