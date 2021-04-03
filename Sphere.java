@@ -1,18 +1,30 @@
 package ImageCreators;
 
+import ImageCreators.Materials.Material;
 import Vector.Vector3D;
 import Vector.VectorMath;
-import processing.core.PApplet;
 
-public class Sphere implements hittableObject{
+public class Sphere implements HittableObject{
 
     public float radius;
     public Vector3D center;
     private final VectorMath vm = new VectorMath();
+    private final Material material;
+
+    public Sphere(float radius, Vector3D center, Material m) {
+        this.radius = radius;
+        this.center = center;
+        if (m.fuzz >= 0.0){
+            this.material = new Material(m.albedo, m.fuzz, m.materialName);
+        } else {
+            this.material = new Material(m.albedo, m.materialName);
+        }
+    }
 
     public Sphere(float radius, Vector3D center) {
         this.radius = radius;
         this.center = center;
+        this.material = null;
     }
 
     @Override
@@ -40,6 +52,7 @@ public class Sphere implements hittableObject{
         hRec.point = r.getAt(hRec.t);
         Vector3D outwardNormal = vm.divide((vm.sub(hRec.point, center)), radius);
         hRec.setFaceNormal(r, outwardNormal);
+        hRec.m = this.material;
 
         return true;
     }

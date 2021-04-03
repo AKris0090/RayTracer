@@ -17,6 +17,10 @@ public class VectorMath {
         return new Vector3D((v.x * scalar), (v.y * scalar), (v.z * scalar));
     }
 
+    public Vector3D basicMultiply(Vector3D v, Vector3D v1) {
+        return new Vector3D((v.x * v1.x), (v.y * v1.y), (v.z * v1.z));
+    }
+
     public Vector3D divide(Vector3D v, float scalar) {
         return new Vector3D((v.x / scalar), (v.y / scalar), (v.z / scalar));
     }
@@ -63,5 +67,23 @@ public class VectorMath {
             return max;
         }
         return x;
+    }
+
+    public Vector3D randomVectorInUnitCircle(double min, double max) {
+        while (true) {
+            Vector3D randVector = new Vector3D((float) randomDouble(min, max), (float) randomDouble(min, max), (float) randomDouble(min, max));
+            if ((randVector.getNormalLength() * randVector.getNormalLength()) < 1) {
+                return normalize(randVector);
+            }
+        }
+    }
+
+    public Vector3D reflect (Vector3D v, Vector3D n){
+        return sub(v, multiply(n, (2 * dotProduct(v, n))));
+    }
+
+    public boolean nearZero(Vector3D v){
+        float val = 0.000000001f;
+        return ((v.x < val) && (v.y < val) && (v.z < val));
     }
 }

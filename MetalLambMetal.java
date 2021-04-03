@@ -6,7 +6,7 @@ import Vector.VectorMath;
 
 import java.io.IOException;
 
-public class TrueLambReflection {
+public class MetalLambMetal {
 
     private final int height;
     private final int width;
@@ -17,7 +17,7 @@ public class TrueLambReflection {
     private final int samplesPerPixel;
     private final int maxNumBounces;
 
-    public TrueLambReflection(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces) {
+    public MetalLambMetal(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces) {
         this.height = height;
         this.width = width;
         this.ppm = ppm;
@@ -29,7 +29,7 @@ public class TrueLambReflection {
 
     public Vector3D randomHemisphericalScatter(double min, double max, Vector3D normal) {
         Vector3D rand = vm.randomVectorInUnitCircle(min, max);
-        if (vm.dotProduct(rand, normal) > 0.0){
+        if (vm.dotProduct(rand, normal) > 0.0) {
             return rand;
         } else {
             return vm.multiply(rand, -1.0f);
@@ -37,8 +37,6 @@ public class TrueLambReflection {
     }
 
     public Vector3D gradColor(Ray r, int numBounces) {
-        Hittable h1 = new Hittable();
-        h1.worldObjects = h.worldObjects;
         Vector3D dir = r.getDirection();
         Vector3D direction = vm.normalize(dir);
 
@@ -51,16 +49,17 @@ public class TrueLambReflection {
             return new Vector3D(0, 0, 0);
         }
 
-        if (h1.hitAnything(r, 0.001, Double.POSITIVE_INFINITY, h1.hRec)) {
-            Vector3D rand = randomHemisphericalScatter(-1.0, 1.0, h1.hRec.normal);
-            Vector3D target = vm.add(h1.hRec.point, rand);
-            return vm.multiply(gradColor((new Ray(h1.hRec.point, vm.sub(target, h1.hRec.point))), numBounces - 1), 0.5f);
+        if (h.hitAnything(r, 0.001, Double.POSITIVE_INFINITY, h.hRec)) {
+            if (h.hRec.m.scatter(r, h)) {
+                return vm.basicMultiply(h.hRec.m.attenuation, gradColor(h.hRec.m.scattered, numBounces - 1));
+            }
+            return new Vector3D(0, 0, 0);
         }
 
         return vm.add((vm.multiply(white, (float) (1.0 - t))), (vm.multiply(desired, (float) t)));
     }
 
-    public void initLambertianGammaCorrectedDiffuseImage() throws IOException {
+    public void initMetalSpheresImage() throws IOException {
         float[][] redChannel = new float[height + 1][width];
         float[][] greenChannel = new float[height + 1][width];
         float[][] blueChannel = new float[height + 1][width];
@@ -88,8 +87,8 @@ public class TrueLambReflection {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("lambertianGammaCorrectedDiffuseSphere.ppm", samplesPerPixel);
-        System.out.println("\n True Lambertian Gamma Corrected Diffuse Sphere Image Printed \n");
+        ppm.createImage("metalSpheres.ppm", samplesPerPixel);
+        System.out.println("\n Metal Spheres Image Printed \n");
     }
 
     public void updateProgressBar(int count, int height) {
