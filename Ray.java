@@ -5,9 +5,12 @@ import Vector.VectorMath;
 
 public class Ray {
 
-    private final Vector3D origin;
-    private final Vector3D direction;
+    private Vector3D origin = new Vector3D();
+    private Vector3D direction = new Vector3D();
     private final VectorMath m = new VectorMath();
+
+    public Ray (){
+    }
 
     public Ray (Vector3D origin, Vector3D direction){
         this.origin = origin;

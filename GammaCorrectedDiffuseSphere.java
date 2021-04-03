@@ -27,15 +27,6 @@ public class GammaCorrectedDiffuseSphere {
         this.maxNumBounces = numBounces;
     }
 
-    public Vector3D randomVectorInUnitCircle(double min, double max) {
-        while (true) {
-            Vector3D randVector = new Vector3D((float) vm.randomDouble(min, max), (float) vm.randomDouble(min, max), (float) vm.randomDouble(min, max));
-            if ((randVector.getNormalLength() * randVector.getNormalLength()) < 1) {
-                return randVector;
-            }
-        }
-    }
-
     public Vector3D gradColor(Ray r, int numBounces) {
         Hittable h1 = new Hittable();
         h1.worldObjects = h.worldObjects;
@@ -52,7 +43,7 @@ public class GammaCorrectedDiffuseSphere {
         }
 
         if (h1.hitAnything(r, 0.001, Double.POSITIVE_INFINITY, h1.hRec)) {
-            Vector3D rand = randomVectorInUnitCircle(-1, 1);
+            Vector3D rand = vm.randomVectorInUnitCircle(-1, 1);
             Vector3D target = vm.add(vm.add(h1.hRec.point, h1.hRec.normal), rand);
             return vm.multiply(gradColor((new Ray(h1.hRec.point, vm.sub(target, h1.hRec.point))), numBounces - 1), 0.5f);
         }
