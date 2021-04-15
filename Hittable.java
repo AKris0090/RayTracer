@@ -1,5 +1,8 @@
 package ImageCreators;
 
+import AABB.AABB;
+import AABB.AABBMath;
+import AABB.retObject;
 import ImageCreators.Materials.Material;
 import Vector.Vector3D;
 import Vector.VectorMath;
@@ -10,10 +13,27 @@ public class Hittable {
     public boolean frontFace;
     public VectorMath vm = new VectorMath();
     public ArrayList<HittableObject> worldObjects = new ArrayList<>();
-    public hitRecord hRec;
+    public hitRecord hRec = new hitRecord();
+    AABBMath aabbMath = new AABBMath();
 
-    public Hittable() {
-        hRec = new hitRecord();
+    public boolean boundingListBox(double time0, double time1, AABB outputBox){
+        if (worldObjects.size() == 0){
+            return false;
+        }
+
+        boolean firstBox = true;
+        AABB tempBox = new AABB();
+
+        for (HittableObject o : worldObjects){
+            retObject r = o.boundingBox(time0, time1, tempBox);
+            if (!(r.isBounded())){
+                return false;
+            }
+            outputBox = firstBox ? tempBox : aabbMath.surroundingBox(outputBox, tempBox);
+            firstBox = false;
+        }
+
+        return true;
     }
 
     public class hitRecord {
@@ -21,6 +41,8 @@ public class Hittable {
         public Vector3D normal;
         public Material m;
         double t;
+        public double u;
+        public double v;
 
         public hitRecord() {
         }

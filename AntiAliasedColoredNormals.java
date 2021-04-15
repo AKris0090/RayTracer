@@ -69,7 +69,7 @@ public class AntiAliasedColoredNormals {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("antiAliasedColoredNormalsAndGround.ppm", samplesPerPixel);
+        ppm.createImage("4antiAliasedColoredNormalsAndGround.ppm", samplesPerPixel);
         System.out.println("\n AntiAliased Colored Normals Image Printed \n");
     }
 

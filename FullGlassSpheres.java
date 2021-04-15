@@ -1,12 +1,13 @@
 package ImageCreators;
 
+import ImageCreators.Materials.MaterialInfo;
 import Vector.Camera;
 import Vector.Vector3D;
 import Vector.VectorMath;
 
 import java.io.IOException;
 
-public class TrueLambReflection {
+public class FullGlassSpheres {
 
     private final int height;
     private final int width;
@@ -16,8 +17,9 @@ public class TrueLambReflection {
     private final Camera camera;
     private final int samplesPerPixel;
     private final int maxNumBounces;
+    private final int version;
 
-    public TrueLambReflection(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces) {
+    public FullGlassSpheres(int height, int width, PPMFileMaker ppm, Camera camera, Hittable h, int samplesPerPixel, int numBounces, int version) {
         this.height = height;
         this.width = width;
         this.ppm = ppm;
@@ -25,6 +27,7 @@ public class TrueLambReflection {
         this.h = h;
         this.samplesPerPixel = samplesPerPixel;
         this.maxNumBounces = numBounces;
+        this.version = version;
     }
 
     public Vector3D randomHemisphericalScatter(double min, double max, Vector3D normal) {
@@ -37,8 +40,6 @@ public class TrueLambReflection {
     }
 
     public Vector3D gradColor(Ray r, int numBounces) {
-        Hittable h1 = new Hittable();
-        h1.worldObjects = h.worldObjects;
         Vector3D dir = r.getDirection();
         Vector3D direction = vm.normalize(dir);
 
@@ -51,16 +52,20 @@ public class TrueLambReflection {
             return new Vector3D(0, 0, 0);
         }
 
-        if (h1.hitAnything(r, 0.001, Double.POSITIVE_INFINITY, h1.hRec)) {
-            Vector3D rand = randomHemisphericalScatter(-1.0, 1.0, h1.hRec.normal);
-            Vector3D target = vm.add(h1.hRec.point, rand);
-            return vm.multiply(gradColor((new Ray(h1.hRec.point, vm.sub(target, h1.hRec.point))), numBounces - 1), 0.5f);
+        if (h.hitAnything(r, 0.001, Double.POSITIVE_INFINITY, h.hRec)) {
+            Vector3D attenuation = new Vector3D();
+            Ray scattered = new Ray();
+            MaterialInfo newMatInfo = h.hRec.m.scatter(r, h, attenuation, scattered);
+            if (newMatInfo.isScattered) {
+                return vm.basicMultiply(newMatInfo.attenuation, gradColor(newMatInfo.scattered, numBounces - 1));
+            }
+            return new Vector3D(0, 0, 0);
         }
 
         return vm.add((vm.multiply(white, (float) (1.0 - t))), (vm.multiply(desired, (float) t)));
     }
 
-    public void initLambertianGammaCorrectedDiffuseImage() throws IOException {
+    public void initGlassSpheresImage() throws IOException {
         float[][] redChannel = new float[height + 1][width];
         float[][] greenChannel = new float[height + 1][width];
         float[][] blueChannel = new float[height + 1][width];
@@ -88,8 +93,19 @@ public class TrueLambReflection {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("7lambertianGammaCorrectedDiffuseSphere.ppm", samplesPerPixel);
-        System.out.println("\n True Lambertian Gamma Corrected Diffuse Sphere Image Printed \n");
+        if (version == 1) {
+            ppm.createImage("10fullGlassSpheres.ppm", samplesPerPixel);
+            System.out.println("\n Full Glass Spheres Image Printed \n");
+        } else if (version == 2){
+            ppm.createImage("11diffCamAngle.ppm", samplesPerPixel);
+            System.out.println("\n Different Camera Angle Image Printed \n");
+        } else if (version == 3){
+            ppm.createImage("12scene2DiffCamAngle.ppm", samplesPerPixel);
+            System.out.println("\n Different Camera Angle 2 Image Printed \n");
+        } else if (version == 4){
+            ppm.createImage("13defocusBlur.ppm", samplesPerPixel);
+            System.out.println("\n Defocus Blur Image Printed \n");
+        }
     }
 
     public void updateProgressBar(int count, int height) {

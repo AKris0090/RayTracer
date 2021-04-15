@@ -20,6 +20,10 @@ public class Vector3D {
         return (float) Math.sqrt((this.getX() * this.getX()) + (this.getY() * this.getY()) + (this.getZ() * this.getZ()));
     }
 
+    public float getLengthSquared() {
+        return (this.getX() * this.getX()) + (this.getY() * this.getY()) + (this.getZ() * this.getZ());
+    }
+
     public float getX() {
         return x;
     }

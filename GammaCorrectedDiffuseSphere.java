@@ -79,7 +79,7 @@ public class GammaCorrectedDiffuseSphere {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("gammaCorrectedDiffuseSphere.ppm", samplesPerPixel);
+        ppm.createImage("6gammaCorrectedDiffuseSphere.ppm", samplesPerPixel);
         System.out.println("\n Gamma Corrected Diffuse Sphere Image Printed \n");
     }
 
