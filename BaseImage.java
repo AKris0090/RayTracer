@@ -41,7 +41,7 @@ public class BaseImage {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("base.ppm", 1);
+        ppm.createImage("1base.ppm", 1);
         System.out.println("\n Base Image Printed \n");
     }
 

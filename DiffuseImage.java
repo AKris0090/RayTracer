@@ -88,7 +88,7 @@ public class DiffuseImage {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("diffuseSphere.ppm", samplesPerPixel);
+        ppm.createImage("5diffuseSphere.ppm", samplesPerPixel);
         System.out.println("\n Diffused Sphere Image Printed \n");
     }
 

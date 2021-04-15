@@ -65,7 +65,7 @@ public class ColoredNormals {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("coloredNormalsAndGround.ppm", 1);
+        ppm.createImage("3coloredNormalsAndGround.ppm", 1);
         System.out.println("\n Colored Normals Image Printed \n");
     }
 

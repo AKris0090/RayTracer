@@ -67,7 +67,7 @@ public class GradientAndRedCircle {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("gradientBlue.ppm", 1);
+        ppm.createImage("2gradientBlue.ppm", 1);
         System.out.println("\n Gradient Image Printed \n");
     }
 

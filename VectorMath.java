@@ -43,11 +43,11 @@ public class VectorMath {
         float x1, y1, z1, x2, y2, z2;
 
         x1 = o1.x;
-        x2 = o2.getX();
+        x2 = o2.x;
         y1 = o1.y;
-        y2 = o2.getY();
+        y2 = o2.y;
         z1 = o1.z;
-        z2 = o2.getZ();
+        z2 = o2.z;
 
         float nx, ny, nz;
         nx = (y1 * z2) - (z1 * y2);
@@ -60,13 +60,18 @@ public class VectorMath {
         return min + ((max - min) * Math.random());
     }
 
+    public int randomInt(double min, double max){
+        return (int) (randomDouble(min, max + 1));
+    }
+
     public double clamp(double x, double min, double max) {
         if (x < min) {
             return min;
         } else if (x > max) {
             return max;
+        } else {
+            return x;
         }
-        return x;
     }
 
     public Vector3D randomVectorInUnitCircle(double min, double max) {
@@ -78,8 +83,32 @@ public class VectorMath {
         }
     }
 
+    public Vector3D randomVectorInUnitDisk(){
+        while (true){
+            Vector3D p = new Vector3D((float) randomDouble(-1, 1), (float) randomDouble(-1, 1),  0.0f);
+            if (p.getLengthSquared() >= 1){
+                continue;
+            }
+            return p;
+        }
+    }
+
+    public Vector3D refract (Vector3D uv, Vector3D n, double etaOverEtaPrime){
+        float cosTheta = Math.min(dotProduct(sub(new Vector3D(0.0f, 0.0f, 0.0f), uv), n), 1.0f);
+        Vector3D rPerpendicular = multiply(add(multiply(n, cosTheta), uv), (float) etaOverEtaPrime);
+        Vector3D rParallel = multiply(n, (0.0f - ((float) Math.sqrt(Math.abs(1.0f - rPerpendicular.getLengthSquared())))));
+        return add(rPerpendicular, rParallel);
+    }
+
     public Vector3D reflect (Vector3D v, Vector3D n){
         return sub(v, multiply(n, (2 * dotProduct(v, n))));
+    }
+
+    public double reflectance(double cosine, double refIdx){
+        //SCHLICK'S APPROXIMATION
+        double rTheta = (1.0f - refIdx) / (1.0f + refIdx);
+        double newRTheta = rTheta * rTheta;
+        return newRTheta + ((1.0f - newRTheta) * Math.pow((1.0f - cosine), 5));
     }
 
     public boolean nearZero(Vector3D v){

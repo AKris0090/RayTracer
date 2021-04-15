@@ -1,5 +1,6 @@
 package ImageCreators;
 
+import ImageCreators.Materials.MaterialInfo;
 import Vector.Camera;
 import Vector.Vector3D;
 import Vector.VectorMath;
@@ -50,8 +51,11 @@ public class MetalLambMetal {
         }
 
         if (h.hitAnything(r, 0.001, Double.POSITIVE_INFINITY, h.hRec)) {
-            if (h.hRec.m.scatter(r, h)) {
-                return vm.basicMultiply(h.hRec.m.attenuation, gradColor(h.hRec.m.scattered, numBounces - 1));
+            Vector3D attenuation = new Vector3D();
+            Ray scattered = new Ray();
+            MaterialInfo newMatInfo = h.hRec.m.scatter(r, h, attenuation, scattered);
+            if (newMatInfo.isScattered) {
+                return vm.basicMultiply(newMatInfo.attenuation, gradColor(newMatInfo.scattered, numBounces - 1));
             }
             return new Vector3D(0, 0, 0);
         }
@@ -87,7 +91,7 @@ public class MetalLambMetal {
         ppm.setGreenChannel(greenChannel);
         ppm.setBlueChannel(blueChannel);
 
-        ppm.createImage("metalSpheres.ppm", samplesPerPixel);
+        ppm.createImage("8metalSpheres.ppm", samplesPerPixel);
         System.out.println("\n Metal Spheres Image Printed \n");
     }
 

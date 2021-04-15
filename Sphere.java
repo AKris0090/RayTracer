@@ -1,6 +1,11 @@
 package ImageCreators;
 
+import AABB.AABB;
+import AABB.retObject;
+import ImageCreators.Materials.Lambertian;
 import ImageCreators.Materials.Material;
+import Textures.Texture;
+import Textures.returnDouble;
 import Vector.Vector3D;
 import Vector.VectorMath;
 
@@ -14,11 +19,13 @@ public class Sphere implements HittableObject{
     public Sphere(float radius, Vector3D center, Material m) {
         this.radius = radius;
         this.center = center;
-        if (m.fuzz >= 0.0){
-            this.material = new Material(m.albedo, m.fuzz, m.materialName);
-        } else {
-            this.material = new Material(m.albedo, m.materialName);
-        }
+        this.material = m;
+    }
+
+    public Sphere(float radius, Vector3D center, Texture tex) {
+        this.radius = radius;
+        this.center = center;
+        this.material = new Lambertian(tex);
     }
 
     public Sphere(float radius, Vector3D center) {
@@ -52,9 +59,18 @@ public class Sphere implements HittableObject{
         hRec.point = r.getAt(hRec.t);
         Vector3D outwardNormal = vm.divide((vm.sub(hRec.point, center)), radius);
         hRec.setFaceNormal(r, outwardNormal);
+        returnDouble ret = getSphereUV(outwardNormal);
+        hRec.u = ret.getU();
+        hRec.v = ret.getV();
         hRec.m = this.material;
 
         return true;
+    }
+
+    @Override
+    public retObject boundingBox(double tim0, double tim1, AABB outputBox) {
+        outputBox = new AABB(vm.sub(center, new Vector3D(radius, radius, radius)), vm.add(center, new Vector3D(radius, radius, radius)));
+        return new retObject(true, outputBox);
     }
 
     public double checkInSphereValue(Ray r) {
@@ -68,5 +84,14 @@ public class Sphere implements HittableObject{
         } else {
             return (((-halfBVal) - Math.sqrt(discriminant)) / (aVal));
         }
+    }
+
+    public returnDouble getSphereUV(Vector3D p) {
+        double theta = Math.acos(vm.multiply(p, -1.0f).getY());
+        double phi = Math.atan2(vm.multiply(p, -1.0f).getZ(), p.getX() + Math.PI);
+
+        double u = phi / (2 * Math.PI);
+        double v = theta / Math.PI;
+        return new returnDouble(u, v);
     }
 }
