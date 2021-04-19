@@ -126,11 +126,14 @@ public class Final {
             ppm.createImage("22twoMarbleImage.ppm", samplesPerPixel);
             System.out.println("\n Marble Image Printed \n");
         } else if (version == 10) {
-            ppm.createImage("23EarthImage.ppm", samplesPerPixel);
+            ppm.createImage("23earthImage.ppm", samplesPerPixel);
             System.out.println("\n Earth Image Printed \n");
         } else if (version == 11) {
-            ppm.createImage("24LightImage.ppm", samplesPerPixel);
+            ppm.createImage("24lightImage.ppm", samplesPerPixel);
             System.out.println("\n Light Emission Image Printed \n");
+        } else if (version == 12) {
+            ppm.createImage("25basicCornellBox.ppm", samplesPerPixel);
+            System.out.println("\n Basic Cornell Box Image Printed \n");
         }
     }
 
