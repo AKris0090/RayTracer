@@ -4,5 +4,5 @@
 #### FILE "DImage" IS NOT MY CODE
 
 ##### just run main already
-####### rectangles dont quite work
-####### HMMMMMMMMMMM
+##### rectangles dont quite work
+##### HMMMMMMMMMMM
