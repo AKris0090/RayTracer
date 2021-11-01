@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021.
+ *
+ * Arjun Krishnan 10/31/2021
+ * See my other coding projects at: akrishnan.netlify.app
+ * Questions, email me at: artk0090@gmail.com
+ */
+
 package Textures;
 
 import ImageCreators.DImage;
@@ -23,7 +31,7 @@ public class ImageTexture extends PApplet implements Texture {
     int width;
     int height;
     private final VectorMath vm = new VectorMath();
-    private int bytesPerPixel = 3;
+    private int componentsPerPixel;
     private int bytesPerScanLine;
 
     public ImageTexture(String imageNaM) {
@@ -42,6 +50,8 @@ public class ImageTexture extends PApplet implements Texture {
         redImg = dimg.getRedChannel();
         greenImg = dimg.getGreenChannel();
         blueImg = dimg.getBlueChannel();
+        int bytesPerPixel = 3;
+        this.componentsPerPixel = bytesPerPixel;
         this.bytesPerScanLine = bytesPerPixel * this.width;
     }
 
@@ -51,15 +61,31 @@ public class ImageTexture extends PApplet implements Texture {
             return new Vector3D(0.0f, 0.1f, 0.1f);
         }
 
-        double uu = vm.clamp(u, 0.0, 1.0);
-        double vv = vm.clamp(v, 0.0, 1.0);
-        int i = (int) (uu * width);
-        int j = (int) (vv * height);
-        if (i >= width) {
-            i = width - 1;
-        }
-        if (j >= height) {
-            j = height - 1;
+        int i;
+        int j;
+        if (u > 0) {
+            double uu = vm.clamp(u, 0.0, 1.0);
+            double vv = 1.0 - vm.clamp(v, 0.0, 1.0);
+//        System.out.println(uu + " , " + vv);
+            i = (int) (uu * width);
+            j = (int) (vv * height);
+            if (i >= width) {
+                i = width - 1;
+            }
+            if (j >= height) {
+                j = height - 1;
+            }
+        } else {
+            double vv = 1.0 - vm.clamp(v, 0.0, 1.0);
+//        System.out.println(uu + " , " + vv);
+            i = (int) ((width) + (u * width));
+            j = (int) (vv * height);
+            if (i >= width) {
+                i = width - 1;
+            }
+            if (j >= height) {
+                j = height - 1;
+            }
         }
 
         double colorScale = 1.0 / 255.0;

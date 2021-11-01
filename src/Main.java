@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021.
+ *
+ * Arjun Krishnan 10/31/2021
+ * See my other coding projects at: akrishnan.netlify.app
+ * Questions, email me at: artk0090@gmail.com
+ */
+
 import ImageCreators.*;
 import ImageCreators.Materials.Dielectric;
 import ImageCreators.Materials.Lambertian;
@@ -287,60 +295,61 @@ public class Main {
 //        Final f8 = new Final(height, width, ppm, camera12, h9, samplesPerPixel, numBounces, 9);
 //        f8.initFinalImage(new Vector3D(0.7f, 0.8f, 1.0f));
 //
-//        //EARTH SPHERE - WORK ON THIS LATER WHEN YOU GIVE A DAMN
-//        width = 400;
-//        height = (int) (width * invAspectRatio);
-//        samplesPerPixel = 100;
-//
-//        lookFrom = new Vector3D(13.0f, 3.0f, 2.0f);
-//        lookAt = new Vector3D(0.0f, 0.0f, 0.0f);
-//        vUp = new Vector3D(0.0f, 1.0f, 0.0f);
-//        distToFocus = 10.0;
-//        aperture = 0.1;
-//        Camera camera13 = new Camera(lookFrom, lookAt, vUp, 20, aspectRatio, aperture, distToFocus, 0.0, 1.0, 4);
-//
-//        Earth earth = new Earth("refImage\\secondtex.jpg");
-//        Hittable h10 = earth.generateScene();
-//
-//        Final f9 = new Final(height, width, ppm, camera13, h10, samplesPerPixel, numBounces, 10);
-//        f9.initFinalImage(new Vector3D(0.7f, 0.8f, 1.0f));
-//
-        //EMISSION IMAGE
+        //EARTH SPHERE - WORK ON THIS LATER WHEN YOU GIVE A DAMN
         width = 400;
         height = (int) (width * invAspectRatio);
-        samplesPerPixel = 600;
+        samplesPerPixel = 100;
 
-        lookFrom = new Vector3D(26.0f, 3.0f, 6.0f);
-        lookAt = new Vector3D(0.0f, 2.0f, 0.0f);
-        vUp = new Vector3D(0.0f, 1.0f, 0.0f);
-        distToFocus = 20.0;
-        aperture = 0.1;
-        Camera camera14 = new Camera(lookFrom, lookAt, vUp, 20, aspectRatio, aperture, distToFocus, 0.0, 1.0, 4);
-
-        SimpleLight simpleLight = new SimpleLight(4.0);
-        Hittable h11 = simpleLight.generateScene();
-
-        Final f10 = new Final(height, width, ppm, camera14, h11, samplesPerPixel, numBounces, 11);
-        f10.initFinalImage(new Vector3D(0.0f, 0.0f, 0.0f));
-
-        //BASIC CORNELL BOX IMAGE
-        width = 800;
-        invAspectRatio = 1.0;
-        height = (int) (width * invAspectRatio);
-        samplesPerPixel = 200;
-
-        lookFrom = new Vector3D(278.0f, 278.0f, -800.0f);
-        lookAt = new Vector3D(278.0f, 278.0f, 0.0f);
+        lookFrom = new Vector3D(13.0f, 3.0f, -2.0f);
+//        lookFrom = new Vector3D(13.0f, 13.0f, 0.0f);
+        lookAt = new Vector3D(0.0f, 0.0f, 0.0f);
         vUp = new Vector3D(0.0f, 1.0f, 0.0f);
         distToFocus = 10.0;
         aperture = 0.1;
-        Camera camera15 = new Camera(lookFrom, lookAt, vUp, 40, aspectRatio, aperture, distToFocus, 0.0, 1.0, 4);
+        Camera camera13 = new Camera(lookFrom, lookAt, vUp, 20, aspectRatio, aperture, distToFocus, 0.0, 1.0, 4);
 
-        CornellBox cornellBox = new CornellBox();
-        Hittable h12 = cornellBox.generateScene();
+        Earth earth = new Earth("refImage\\secondtex.jpg");
+        Hittable h10 = earth.generateScene();
 
-        Final f11 = new Final(height, width, ppm, camera15, h12, samplesPerPixel, numBounces, 12);
-        f11.initFinalImage(new Vector3D(0.0f, 0.0f, 0.0f));
+        Final f9 = new Final(height, width, ppm, camera13, h10, samplesPerPixel, numBounces, 10);
+        f9.initFinalImage(new Vector3D(0.7f, 0.8f, 1.0f));
+//
+//        //EMISSION IMAGE
+//        width = 400;
+//        height = (int) (width * invAspectRatio);
+//        samplesPerPixel = 600;
+//
+//        lookFrom = new Vector3D(26.0f, 3.0f, 6.0f);
+//        lookAt = new Vector3D(0.0f, 2.0f, 0.0f);
+//        vUp = new Vector3D(0.0f, 1.0f, 0.0f);
+//        distToFocus = 20.0;
+//        aperture = 0.1;
+//        Camera camera14 = new Camera(lookFrom, lookAt, vUp, 20, aspectRatio, aperture, distToFocus, 0.0, 1.0, 4);
+//
+//        SimpleLight simpleLight = new SimpleLight(4.0);
+//        Hittable h11 = simpleLight.generateScene();
+//
+//        Final f10 = new Final(height, width, ppm, camera14, h11, samplesPerPixel, numBounces, 11);
+//        f10.initFinalImage(new Vector3D(0.0f, 0.0f, 0.0f));
+//
+//        //BASIC CORNELL BOX IMAGE
+//        width = 800;
+//        invAspectRatio = 1.0;
+//        height = (int) (width * invAspectRatio);
+//        samplesPerPixel = 200;
+//
+//        lookFrom = new Vector3D(278.0f, 278.0f, -800.0f);
+//        lookAt = new Vector3D(278.0f, 278.0f, 0.0f);
+//        vUp = new Vector3D(0.0f, 1.0f, 0.0f);
+//        distToFocus = 10.0;
+//        aperture = 0.1;
+//        Camera camera15 = new Camera(lookFrom, lookAt, vUp, 40, aspectRatio, aperture, distToFocus, 0.0, 1.0, 4);
+//
+//        CornellBox cornellBox = new CornellBox();
+//        Hittable h12 = cornellBox.generateScene();
+//
+//        Final f11 = new Final(height, width, ppm, camera15, h12, samplesPerPixel, numBounces, 12);
+//        f11.initFinalImage(new Vector3D(0.0f, 0.0f, 0.0f));
 
     }
 }
