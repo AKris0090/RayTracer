@@ -1,8 +1,6 @@
 # RayTracer
 
 #### ALL CODE IS PRODUCED IN JAVA FOLLOWING PETER SHIRLEY'S C++-BASED "RAY TRACING IN ONE WEEKEND" AND OTHER SEQUELS
-#### FILE "DImage" IS NOT MY CODE
+#### FILE "DImage" IS NOT MY CODE, written by David Dobervich of Fremont High School
 
-##### just run main already
-##### rectangles dont quite work
-##### HMMMMMMMMMMM
+##### TODO : rectangles dont quite work
